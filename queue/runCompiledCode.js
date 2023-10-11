@@ -20,12 +20,28 @@ const runWithInput = async (compiledCodePath, input) => {
       child.kill();
     }, 4000); // 7 seconds
 
+
+    // Kill the process if memory limit exceeds i.e. if data cannot be converted to string due to memory exceeding
     child.stdout.on("data", (data) => {
-      responseData.stdout += data.toString();
+      try {
+        responseData.stdout += data.toString();
+      }
+      catch (err) {
+        // output too big to be converted to string
+        responseData.mle = "Memory Limit Exceeded";
+        child.kill();
+      }
     });
 
     child.stderr.on("data", (data) => {
-      responseData.stderr += data.toString();
+      try {
+        responseData.stderr += data.toString();
+      }
+      catch (err) {
+        // output too big to be converted to string
+        responseData.mle = "Memory Limit Exceeded";
+        child.kill();
+      }
     });
 
     child.on("error", (error) => {

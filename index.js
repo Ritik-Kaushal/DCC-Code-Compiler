@@ -16,14 +16,14 @@ const CompilerRouter = require("./routes/Compiler/index");
 const uri = process.env.CONNECTION_URL;
 
 try {
-  app.listen(3000, async () => {
+  app.listen(5001, async () => {
     mongoose
       .connect(uri, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
       })
       .then(() => {
-        console.log("Server running on port 3000 & database is connected");
+        console.log("Server running on port 5001 & database is connected");
       });
   });
 } catch (err) {
