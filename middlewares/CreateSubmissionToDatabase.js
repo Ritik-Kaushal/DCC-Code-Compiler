@@ -2,7 +2,7 @@ const addToDatabase = require("../utils/addSubmissionToDatabase");
 
 const createSubmissionToDatabase = async (req, res, next) => {
   try {
-    const { success, message } = await addToDatabase(req, res);
+    const { success, message } = await addToDatabase(req);
     if (success) {
       next();
     } else {

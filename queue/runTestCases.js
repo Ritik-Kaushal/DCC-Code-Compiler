@@ -104,7 +104,7 @@ const runTestCases = async (username, compiledExecutable, ques_id, testCases, su
 
     const ques = await Question.findOne({ _id: ques_id }, "ques_id").exec();
     if (!testing) await User.updateSolved(ques.ques_id, username);
-    if (isContestRunning) await Contest.updateResult(contest_id, ques_id, username);
+    if (isContestRunning) await Contest.updateResult(contest_id, ques.ques_id, username);
 
     console.log("Accepted");
   } catch (error) {

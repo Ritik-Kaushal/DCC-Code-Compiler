@@ -2,7 +2,7 @@ const Submission = require("../models/submission");
 const moment = require("moment");
 const isContestRunning = require("../utils/isContestRunning");
 
-const validateParameters = (req, res) => {
+const validateParameters = (req) => {
   const { code, username, ques_id, ques_name, lang } = req.body;
 
   if (!code || !username || !ques_id || !ques_name || !lang) {
@@ -52,8 +52,9 @@ const addToDatabase = async (req) => {
           message: "Question is not part of the contest",
         };
       }
+      const { testing } = req.body;
       const currTime = moment().format("DD/MM/YYYY HH:mm");
-      const display_after = verdict ? end_time : currTime;
+      const display_after = verdict ? end_time : testing ? moment().add(1000, "days").format("DD/MM/YYYY HH:mm").toString() : currTime;
 
       const submission = createSubmission(req, display_after, currTime);
 
