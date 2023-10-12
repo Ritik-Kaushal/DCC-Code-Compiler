@@ -21,9 +21,19 @@ RUN apt-get -y install gcc nodejs npm \
 # ENV PATH="/root/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}"
 # RUN nvm install 16.13.2
 
+# install redis
+RUN apt-get update
+RUN apt-get install -y redis-server
+RUN apt-get install -y redis-tools
+
+
+
 COPY . /app
 WORKDIR /app
 RUN npm install
 
 EXPOSE 3000
-CMD ["npm", "start"]
+
+# run the redis server in the background and start the node server
+CMD redis-server & npm start
+# CMD ["npm", "start"]

@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
+const { createClient } = require("redis");
 
 const app = express();
 const bodyParser = require("body-parser");
@@ -10,6 +11,10 @@ dotenv.config();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
+
+const client = createClient()
+  .on("error", (err) => console.log("Redis Client Error", err))
+  .connect();
 
 const CompilerRouter = require("./routes/Compiler/index");
 
