@@ -2,7 +2,7 @@ const { CompilerQueue } = require("../queue/index");
 
 const addToQueue = async (req, res, next) => {
   try {
-    const { submission_id, isContestRunning, testing, ques_id,code } = req.body;
+    const { submission_id, isContestRunning, testing, ques_id, code } = req.body;
     const job = await CompilerQueue.add({
       submission_id: submission_id,
       isContestRunning: isContestRunning,
@@ -22,3 +22,5 @@ const addToQueue = async (req, res, next) => {
 module.exports = {
   addToQueue,
 };
+
+

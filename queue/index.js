@@ -22,19 +22,24 @@ const updateCompilationError = async (submission_id, error) => {
 
 CompilerQueue.process(5, async (job, done) => {
   try {
-    const { code, ques_id, submission_id } = job.data;
+    const { code, ques_id, submission_id, testing, username, contest_id, isContestRunning } = job.data;
     const { executableFileName, CPPFileName, error } = await compileCode(code);
     if (error) {
       console.log("Error while compiling code", error);
-      await updateCompilationError(job.data.submission_id, error);
+      await updateCompilationError(submission_id, error);
       done(error);
       return;
     }
     const testCases = await getAllTestCases(ques_id);
     const result = await runTestCases(
+      username,
       executableFileName,
+      ques_id,
       testCases,
-      submission_id
+      submission_id,
+      testing,
+      isContestRunning,
+      contest_id
     );
     deleteFile(executableFileName);
     deleteFile(CPPFileName);
