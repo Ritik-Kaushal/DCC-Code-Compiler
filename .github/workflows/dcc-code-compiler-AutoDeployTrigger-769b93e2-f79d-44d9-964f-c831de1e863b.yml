@@ -1,0 +1,42 @@
+name: Trigger auto deployment for dcc-code-compiler
+
+# When this action will be executed
+on:
+  # Automatically trigger it when detected changes in repo
+  push:
+    branches: 
+      [ main ]
+    paths:
+    - '**'
+    - '.github/workflows/dcc-code-compiler-AutoDeployTrigger-769b93e2-f79d-44d9-964f-c831de1e863b.yml'
+
+  # Allow manual trigger 
+  workflow_dispatch:
+      
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout to the branch
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.DCCCODECOMPILER_AZURE_CREDENTIALS }}
+
+      - name: Build and push container image to registry
+        uses: azure/container-apps-deploy-action@v1
+        with:
+          appSourcePath: ${{ github.workspace }} 
+          registryUrl: codedcc.azurecr.io
+          registryUsername: ${{ secrets.DCCCODECOMPILER_REGISTRY_USERNAME }}
+          registryPassword: ${{ secrets.DCCCODECOMPILER_REGISTRY_PASSWORD }}
+          containerAppName: dcc-code-compiler
+          resourceGroup: Code-DCC_VM
+          imageToBuild: codedcc.azurecr.io/coderravan/dcc-code-compiler:${{ github.sha }}
+          
+
+     
+
