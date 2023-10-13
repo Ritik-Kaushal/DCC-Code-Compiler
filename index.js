@@ -21,7 +21,7 @@ const CompilerRouter = require("./routes/Compiler/index");
 const uri = process.env.CONNECTION_URL;
 
 try {
-  app.listen(5001, async () => {
+  app.listen(3000, async () => {
     mongoose
       .connect(uri, {
         useNewUrlParser: true,
